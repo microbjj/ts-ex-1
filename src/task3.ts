@@ -1,13 +1,25 @@
+interface IComment {
+    id: number
+    email: string
+}
+
 const COMMENTS_URL = 'https://jsonplaceholder.typicode.com/comments';
 
-const getData = (url) => {
-    // Your code here...
+const getData = async (url: string): Promise<IComment[]> => {
+    const response = await fetch(url)
+
+    if(!response.ok) {
+        throw new Error('Ошибка запроса')
+    }
+
+    return await response.json()
 }
 
 getData(COMMENTS_URL)
     .then(data => {
-        // Your code here...
-    });
+        data.forEach(comment => console.log(`ID: ${comment.id}, Email: ${comment.email}`))
+    })
+    .catch(e => console.error(e))
 
 /**
  * ID: 1, Email: Eliseo...
